@@ -147,16 +147,18 @@ function Install-Project {
 
   # Install the bootstrap cookbooks using Berkshelf
   $env:BERKSHELF_CHEF_CONFIG = $chefConfigPath
+  # Start-Process -FilePath 'c:\opscode\chefdk\bin\berks' -ArgumentList 'vendor' -Wait
   berks vendor
+
   if ( -not $? ) { Pop-Location;  die "Error running berks to download cookbooks." }
 
   # run chef-client (installed by ChefDK) to bootstrap this machine
   # Pass optional named parameter json_attributes to chef-client
   if ($json_attributes -ne "") {
-    C:\opscode\chefdk\bin\chef-client -A -z -l error -c $chefConfigPath -o $bootstrapCookbook --json-attributes $json_attributes
+    chef-client -A -z -l error -c $chefConfigPath -o $bootstrapCookbook --json-attributes $json_attributes
   }
   else {
-    C:\opscode\chefdk\bin\chef-client -A -z -l error -c $chefConfigPath -o $bootstrapCookbook
+    chef-client -A -z -l error -c $chefConfigPath -o $bootstrapCookbook
   }
 
   if ( -not $? ) { Pop-Location;  die "Error running chef-client." }
@@ -165,10 +167,10 @@ function Install-Project {
 
   # Cleanup
   if (Test-Path $tempInstallDir) {
-    Remove-Item -Recurse $tempInstallDir
+    # Remove-Item -Recurse $tempInstallDir
   }
 
-  Remove-Item env:BERKSHELF_CHEF_CONFIG
+  # Remove-Item env:BERKSHELF_CHEF_CONFIG
 
   # End message to indicate completion of setup
   Write-Host "`n`nCongrats!!! Your workstation is now set up for Chef Development!"

@@ -25,6 +25,7 @@ default['chefdk_bootstrap']['package'].tap do |install|
   install['chef_ca'] = false
   install['virtualbox'] = true
   install['vagrant'] = true
+  install['vscode'] = true
   install['git'] = true
   install['chefdk_julia'] = false
   install['kitchen_proxy'] = true
